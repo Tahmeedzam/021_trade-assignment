@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class StockTable extends StatefulWidget {
   const StockTable({super.key});
@@ -11,12 +12,31 @@ class StockTable extends StatefulWidget {
   State<StockTable> createState() => _StockTableState();
 }
 
+class StockDataGridSource extends DataGridSource {
+  late List<DataGridRow> dataGridRows;
+  late List<String> _stockDataList;
+
+  @override
+  DataGridRowAdapter? buildRow(DataGridRow row) {
+    // TODO: implement buildRow
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement rows
+  List<DataGridRow> get rows => dataGridRows;
+}
+
 class _StockTableState extends State<StockTable> {
   List<dynamic> _all_clients = [];
   List<dynamic> _all_stocks = [];
+  List<dynamic> _stockData = [];
   List clientAddedFilter = [];
   List stockAddedFilter = [];
-  // List<String> _data = [];
+  List<dynamic> _filteredData = [];
+  int? _sortColumnIndex;
+  bool _sortAscending = true;
+
   final TextEditingController _clientController = TextEditingController();
   final TextEditingController _stockController = TextEditingController();
 
@@ -25,6 +45,7 @@ class _StockTableState extends State<StockTable> {
     // TODO: implement initState
     super.initState();
     readJson();
+    getFullStockList();
   }
 
   Future<void> readJson() async {
@@ -63,12 +84,58 @@ class _StockTableState extends State<StockTable> {
     }).toList();
   }
 
+  Future<void> getFullStockList() async {
+    final String stockResponse = await rootBundle.loadString(
+      'assets/stock_data.json',
+    );
+    final stockData = json.decode(stockResponse);
+
+    setState(() {
+      _stockData = stockData['StockData'];
+      _filteredData = List.from(_stockData);
+    });
+  }
+
+  void applyFilter() {
+    setState(() {
+      _filteredData = _stockData.where((row) {
+        final client = row['client'].toString();
+        final ticker = row['Ticker'].toString();
+
+        final clientOk =
+            clientAddedFilter.isEmpty || clientAddedFilter.contains(client);
+        final tickerOk =
+            stockAddedFilter.isEmpty || stockAddedFilter.contains(ticker);
+
+        return clientOk && tickerOk;
+      }).toList();
+    });
+  }
+
+  void _sort<T>(
+    Comparable<T> Function(dynamic row) getField,
+    int columnIndex,
+    bool ascending,
+  ) {
+    _filteredData.sort((a, b) {
+      final aValue = getField(a);
+      final bValue = getField(b);
+      return ascending
+          ? Comparable.compare(aValue, bValue)
+          : Comparable.compare(bValue, aValue);
+    });
+
+    setState(() {
+      _sortColumnIndex = columnIndex;
+      _sortAscending = ascending;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Container(
-        height: MediaQuery.of(context).size.height / 1.5,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           color: Color(0xffffffff),
@@ -382,9 +449,85 @@ class _StockTableState extends State<StockTable> {
                 ),
               ),
             ),
+            _filteredData.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : SingleChildScrollView(
+                    child: PaginatedDataTable(
+                      header: const Text("Stock Data"),
+                      rowsPerPage: 5,
+                      columns: [
+                        DataColumn(
+                          label: const Text("Time"),
+                          onSort: (i, asc) =>
+                              _sort((row) => row['time'].toString(), i, asc),
+                        ),
+                        DataColumn(
+                          label: const Text("Client"),
+                          onSort: (i, asc) =>
+                              _sort((row) => row['client'].toString(), i, asc),
+                        ),
+                        DataColumn(
+                          label: const Text("Ticker"),
+                          onSort: (i, asc) =>
+                              _sort((row) => row['Ticker'].toString(), i, asc),
+                        ),
+                        const DataColumn(label: Text("Live")),
+                        DataColumn(label: const Text("Side")),
+                        DataColumn(label: const Text("Product")),
+                        DataColumn(label: const Text("Qty")),
+                        DataColumn(
+                          label: const Text("Price"),
+                          numeric: true,
+                          onSort: (i, asc) =>
+                              _sort((row) => row['Price'] as num, i, asc),
+                        ),
+                      ],
+                      source: _StockDataSource(_filteredData),
+                    ),
+                  ),
           ],
         ),
       ),
     );
   }
+}
+
+class _StockDataSource extends DataTableSource {
+  final List<dynamic> data;
+  _StockDataSource(this.data);
+
+  @override
+  DataRow? getRow(int index) {
+    if (index >= data.length) return null;
+    final row = data[index];
+
+    return DataRow.byIndex(
+      index: index,
+      cells: [
+        DataCell(Text(row['time'].toString())),
+        DataCell(Text(row['client'].toString())),
+        DataCell(Text(row['Ticker'].toString())),
+        DataCell(
+          Icon(
+            row['isLive'] == true ? Icons.circle : Icons.circle_outlined,
+            color: row['isLive'] == true ? Colors.green : Colors.red,
+            size: 12,
+          ),
+        ),
+        DataCell(Text(row['side'].toString())),
+        DataCell(Text(row['Product'].toString())),
+        DataCell(Text(row['Qty(Executed/Total)'].toString())),
+        DataCell(Text(row['Price'].toString())),
+      ],
+    );
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => data.length;
+
+  @override
+  int get selectedRowCount => 0;
 }
