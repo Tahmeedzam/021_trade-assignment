@@ -1,0 +1,52 @@
+{
+    "StockData":[
+        {
+            "time":"08:14:31",
+            "client":"AAA001",
+            "Ticker":"RELIANCE",
+            "side":"Buy",
+            "Product":"CNC",
+            "Qty(Executed/Total)":"50/100",
+            "Price":250.50,
+            "isLive":true,
+            "Actions":["Buy","Sell"]
+
+        },
+        {
+            "time":"08:14:31",
+            "client":"AAA003",
+            "Ticker":"MRF",
+            "side":"Buy",
+            "Product":"NRML",
+            "Qty(Executed/Total)":"10/20",
+            "Price":2700,
+            "isLive":false,
+            "Actions":["Buy","Sell"]
+
+        },
+        {
+            "time":"08:14:31",
+            "client":"AAA002",
+            "Ticker":"ASIANPAINT",
+            "side":"Buy",
+            "Product":"NRML",
+            "Qty(Executed/Total)":"10/30",
+            "Price":1500.60,
+            "isLive":true,
+            "Actions":["Buy","Sell"]
+
+        },
+        {
+            "time":"08:14:31",
+            "client":"AAA002",
+            "Ticker":"TATAINVEST",
+            "side":"Sell",
+            "Product":"INTRADAY",
+            "Qty(Executed/Total)":"10/10",
+            "Price":2300.10,
+            "isLive":false,
+            "Actions":["Buy","Sell"]
+
+        }
+    ]
+}
