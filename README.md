@@ -13,9 +13,10 @@ My Approach and Explaination
 - Here I faced problems, First i thought of DataTable widget but it did not had an options for multiple pages, then I got syncfusion_flutter_datagrid, but it was too confusing, Lastly I put PaginatedDataTable. I creatd json file for dummy data.
 - I couldn't create Table by myself, I had to take help for it.
 
+Figma : https://www.figma.com/design/ZErNE8OwAnw9axMYJpj31A/021-Trade-Assignment?t=8K2wy4zAMUi87zhC-1
+
 ![HomePage](https://github.com/user-attachments/assets/3421adce-d584-4f08-8a1e-c1dd21f9de01)
 ![Drawer](https://github.com/user-attachments/assets/48cf0677-0cfd-45bd-b0c6-19a8d033e16b)
 ![Filter added](https://github.com/user-attachments/assets/16ce7107-6c64-4c40-93dc-8d2bb0775c22)
 ![Filter dropdown](https://github.com/user-attachments/assets/ff36cbe1-f727-4265-9560-0a6ff122b8da)
 
-Figma : https://www.figma.com/design/ZErNE8OwAnw9axMYJpj31A/021-Trade-Assignment?t=8K2wy4zAMUi87zhC-1
