@@ -1,0 +1,21 @@
+{
+    "clients":[
+        {
+            "clientName":"Tahmeed",
+            "clientId": "AAA001"
+        },
+    
+        {
+            "clientName":"Lalit",
+            "clientId": "AAA002"
+        },
+        {
+            "clientName":"abc",
+            "clientId": "AAA003"
+        },
+        {
+            "clientName":"def",
+            "clientId": "AAA004"
+        }
+    ]
+}

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:trade021_assignment/components/all_stock_prices.dart';
+import 'package:trade021_assignment/components/small_stock_price_card.dart';
+import 'package:trade021_assignment/components/stock_table.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -55,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     SizedBox(height: 5),
                     Text(
-                      'Lalit Kumar',
+                      'Lalit K',
                       style: TextStyle(
                         color: Color(0xff18181b),
                         fontSize: 24,
@@ -116,9 +120,74 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         backgroundColor: Color(0xffF4F4F5),
-        body: Column(children: [
-            
-          ],
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              children: [
+                AllStockPrices(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Open Orders',
+                        style: TextStyle(
+                          fontFamily: 'josh',
+                          color: Color(0xff18181b),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 24,
+                        ),
+                      ),
+                      Container(
+                        height: 40,
+                        width: MediaQuery.of(context).size.width / 3.7,
+                        decoration: BoxDecoration(
+                          color: Color(0xffE4E4E7),
+
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withAlpha(63),
+                              blurRadius: 4.0,
+                              offset: Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.file_download_outlined,
+                              size: 20,
+                              color: Color(0xff18181b),
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Text(
+                                'Download',
+                                style: TextStyle(
+                                  fontFamily: 'josh',
+                                  color: Color(0xff18181b),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                //
+                SizedBox(height: 5),
+                StockTable(),
+              ],
+            ),
+          ),
         ),
       ),
     );

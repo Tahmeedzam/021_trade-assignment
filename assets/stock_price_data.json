@@ -1,0 +1,20 @@
+{
+    "stocks":[
+        {
+            "stockName":"SIGNORIA",
+            "stockPrice": 0.00
+        },
+        {
+            "stockName":"NITFY BANK",
+            "stockPrice": 52323.30
+        },
+        {
+            "stockName":"NITFY FIN SERVICE",
+            "stockPrice": 25255.75
+        },
+        {
+            "stockName":"RELCHEMQ",
+            "stockPrice": 162.73
+        }
+    ]
+}
